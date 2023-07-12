@@ -8,6 +8,7 @@ import compression from "compression";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import logger from "./configs/logger.config.js";
+import createHttpError from "http-errors";
 
 //dot config
 dotenv.config();
@@ -50,6 +51,21 @@ app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("hello from server");
+});
+
+app.use(async (req, res, next) => {
+  next(createHttpError.NotFound("This route does not exist"));
+});
+
+//error handling
+app.use(async (err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send({
+    error: {
+      status: err.status || 500,
+      message: err.message,
+    },
+  });
 });
 
 export default app;
