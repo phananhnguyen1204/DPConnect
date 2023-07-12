@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import fileUpload from "express-fileupload";
 import cors from "cors";
+import logger from "./configs/logger.config.js";
 
 //dot config
 dotenv.config();
