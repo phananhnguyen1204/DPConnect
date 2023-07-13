@@ -1,5 +1,5 @@
 import express from "express";
-import trimRequest from "trim-requesttrimRequest, ";
+import trimRequest from "trim-request";
 import {
   login,
   logout,
@@ -9,8 +9,8 @@ import {
 
 const router = express.Router();
 
-router.route("/register").post(trimRequest, register);
-router.route("/login").post(trimRequest, login);
-router.route("/logout").post(trimRequest, logout);
-router.route("/refreshToken").post(trimRequest, refreshToken);
+router.route("/register").post(trimRequest.all, register);
+router.route("/login").post(trimRequest.all, login);
+router.route("/logout").post(trimRequest.all, logout);
+router.route("/refreshToken").post(trimRequest.all, refreshToken);
 export default router;
