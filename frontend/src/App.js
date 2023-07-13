@@ -5,17 +5,18 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import Register from "./pages/register";
 function App() {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => ({ ...state }));
-  console.log(user);
+  // const dispatch = useDispatch();
+  // const { user } = useSelector((state) => ({ ...state }));
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home></Home>}></Route>
-        <Route path="/login" element={<Login></Login>}></Route>
-        <Route path="/register" element={<Register></Register>}></Route>
-      </Routes>
-    </Router>
+    <div className="dark">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home></Home>}></Route>
+          <Route path="/login" element={<Login></Login>}></Route>
+          <Route path="/register" element={<Register></Register>}></Route>
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
