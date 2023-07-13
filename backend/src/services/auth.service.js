@@ -88,5 +88,6 @@ export const signUser = async function (email, password) {
   if (!passwordMatches) {
     throw createHttpError.NotFound("Password not match.");
   }
+
   return user;
 };
