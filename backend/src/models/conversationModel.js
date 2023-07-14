@@ -15,7 +15,7 @@ const conversationSchema = mongoose.Schema(
       default: false,
     },
     users: [{ type: ObjectId, ref: "UserModel" }],
-    lastestMessage: {
+    latestMessage: {
       type: ObjectId,
       ref: "MessageModel",
     },

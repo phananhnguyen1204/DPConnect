@@ -3,6 +3,7 @@ import logger from "../configs/logger.config.js";
 import {
   createConversation,
   doesConversationExist,
+  getUserConversations,
   populateConversation,
 } from "../services/conversation.service.js";
 import { findUser } from "../services/user.service.js";
@@ -47,6 +48,16 @@ export const create_open_conversation = async (req, res, next) => {
       );
       res.status(200).json(populatedConvo);
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getConversations = async (req, res, next) => {
+  try {
+    const user_id = req.user.userId;
+    const conversations = await getUserConversations(user_id);
+    res.status(200).json(conversations);
   } catch (error) {
     next(error);
   }
