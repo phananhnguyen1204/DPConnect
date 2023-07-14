@@ -6,7 +6,8 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 function App() {
   // const dispatch = useDispatch();
-  // const { user } = useSelector((state) => ({ ...state }));
+  const { user } = useSelector((state) => ({ ...state }));
+  console.log(user);
   return (
     <div className="dark">
       <Router>

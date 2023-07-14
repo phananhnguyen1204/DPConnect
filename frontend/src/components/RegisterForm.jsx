@@ -1,13 +1,16 @@
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "../utils/validation";
 import { Link, useNavigate } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import AuthInput from "./auth/AuthInput";
+import { registerUser } from "../features/userSlice";
 
 function RegisterForm() {
-  const { status } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status, error } = useSelector((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -17,15 +20,19 @@ function RegisterForm() {
     resolver: yupResolver(signUpSchema),
   });
 
-  const onSubmit = (data) => console.log(data);
-  // console.log("value", watch());
-  // console.log("errors", errors);
+  const onSubmit = async (data) => {
+    let res = await dispatch(registerUser({ ...data, picture: "" }));
+    if (res?.payload?.user) {
+      navigate("/");
+    }
+  };
+
   return (
     <div className="h-screen w-full flex items-center justify-center overflow-hidden">
       <div className="max-w-md space-y-8 p-10 dark:bg-dark_bg_2 rounded-xl">
         <div className="text-center dark:text-dark_text_1">
           <h2 className="mt-6 text-3xl font-bold">Welcome</h2>
-          <p className="mt-2 text-sm">Sign up</p>
+          <p className="mt-2 text-sm">Sign up &darr;</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-6">
           <AuthInput
@@ -56,7 +63,14 @@ function RegisterForm() {
             register={register}
             error={errors?.password?.message}
           ></AuthInput>
-          {/* <input type="text" {...register("name")}></input> */}
+          {/* if error occurs */}
+          {error ? (
+            <div>
+              <p className="text-red-400">{error}</p>
+            </div>
+          ) : null}
+
+          {/* sign up button */}
           <button
             type="submit"
             className="w-full flex justify-center bg-green_1 text-gray-100 p-4 rounded-full tracking-wide font-semibold focus:outline-none hover:bg-green_2 shadow-lg cursor-pointer transition ease-in duration-300"
@@ -69,12 +83,12 @@ function RegisterForm() {
           </button>
           {/* Sign in link */}
           <p className="flex flex-col items-center justify-center mt-10 text-center text-md dark:text-dark_text_1">
-            <span>have an account ?</span>
+            <span>Already have an account ?</span>
             <Link
               to="/login"
               className=" hover:underline cursor-pointer transition ease-in duration-300"
             >
-              Sign in
+              &rarr; Sign in &larr;
             </Link>
           </p>
         </form>
