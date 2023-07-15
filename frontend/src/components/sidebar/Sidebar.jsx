@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Conversations } from "./conversations";
 import SidebarHeader from "./header/SidebarHeader";
 import { Notifications } from "./notifications";
 import { Search } from "./search";
@@ -13,6 +14,8 @@ function Sidebar() {
       <Notifications></Notifications>
       {/* Search */}
       <Search searchLength={searchResults.length}></Search>
+      {/* Conversations */}
+      <Conversations></Conversations>
     </div>
   );
 }
