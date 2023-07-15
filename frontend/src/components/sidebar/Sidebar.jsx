@@ -6,6 +6,7 @@ import { Search } from "./search";
 
 function Sidebar() {
   const [searchResults, setSearchResults] = useState([]);
+  console.log(searchResults);
   return (
     <div className="w-[40%] h-full select-none">
       {/* Sidebar header */}
@@ -13,7 +14,10 @@ function Sidebar() {
       {/* Notification */}
       <Notifications></Notifications>
       {/* Search */}
-      <Search searchLength={searchResults.length}></Search>
+      <Search
+        searchLength={searchResults.length}
+        setSearchResults={setSearchResults}
+      ></Search>
       {/* Conversations */}
       <Conversations></Conversations>
     </div>
