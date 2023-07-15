@@ -3,10 +3,10 @@ import { Conversations } from "./conversations";
 import SidebarHeader from "./header/SidebarHeader";
 import { Notifications } from "./notifications";
 import { Search } from "./search";
+import SearchResults from "./search/SearchResults";
 
 function Sidebar() {
   const [searchResults, setSearchResults] = useState([]);
-  console.log(searchResults);
   return (
     <div className="w-[40%] h-full select-none">
       {/* Sidebar header */}
@@ -18,8 +18,16 @@ function Sidebar() {
         searchLength={searchResults.length}
         setSearchResults={setSearchResults}
       ></Search>
-      {/* Conversations */}
-      <Conversations></Conversations>
+      {searchResults.length > 0 ? (
+        <>
+          <SearchResults searchResults={searchResults}></SearchResults>
+        </>
+      ) : (
+        <>
+          {/* Conversations */}
+          <Conversations></Conversations>
+        </>
+      )}
     </div>
   );
 }
