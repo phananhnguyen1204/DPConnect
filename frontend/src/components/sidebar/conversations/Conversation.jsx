@@ -1,5 +1,7 @@
+import moment from "moment";
+import { dateHandler } from "../../../utils/date.js";
+
 function Conversation({ convo }) {
-  console.log(convo.name);
   return (
     <li className="list-none h-[72px] w-full dark:bg-dark_bg_1 hover:dark:bg-dark_bg_2 cursor-pointer dark:text-dark_text_1 px-[10px]">
       {/* Container */}
@@ -30,7 +32,15 @@ function Conversation({ convo }) {
             </div>
           </div>
         </div>
+        {/* Right */}
+        <div className="flex flex-col gap-y-4 items-end text-xs">
+          <span className="dark:text-dark_text_2">
+            {dateHandler(convo.latestMessage.createdAt)}
+          </span>
+        </div>
       </div>
+      {/* BORDER */}
+      <div className="ml-16 border-b dark:border-b-dark_border_1"></div>
     </li>
   );
 }
