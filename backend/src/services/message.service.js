@@ -3,6 +3,7 @@ import { MessageModel } from "../models/index.js";
 
 export const createMessage = async (data) => {
   let newMessage = await MessageModel.create(data);
+  console.log("newMessage", newMessage);
   if (!newMessage) {
     throw createHttpError.BadRequest("Oops... Something went wrong!");
   }
@@ -26,6 +27,7 @@ export const populateMessage = async (id) => {
         model: "UserModel",
       },
     });
+  console.log("msg", msg);
   if (!msg) {
     throw createHttpError.BadRequest("Oops... Something went wrong!");
   }
@@ -33,9 +35,11 @@ export const populateMessage = async (id) => {
 };
 
 export const getConvoMessages = async (convo_id) => {
-  const messages = await MessageModel.find({
-    conversation: convo_id,
-  })
+  const messages = await Messa;
+  geModel
+    .find({
+      conversation: convo_id,
+    })
     .populate("sender", "name picture email status")
     .populate("conversation");
   if (!messages) {

@@ -35,6 +35,7 @@ export const create_open_conversation = async (req, res, next) => {
       let convodata = {
         //the person you will have conversation with
         name: receiver_user.name,
+        picture: receiver_user.picture,
         isGroup: false,
         users: [sender_id, receiver_id],
       };
@@ -43,7 +44,7 @@ export const create_open_conversation = async (req, res, next) => {
       //populate user to get all the information about user
       const populatedConvo = await populateConversation(
         newConvo._id,
-        "user",
+        "users",
         "-password"
       );
       res.status(200).json(populatedConvo);

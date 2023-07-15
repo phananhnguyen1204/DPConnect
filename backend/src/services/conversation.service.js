@@ -15,7 +15,7 @@ export const doesConversationExist = async (sender_id, receiver_id) => {
     //copy the users but not password
   })
     .populate("users", "-password")
-    .populate("lastestMessage");
+    .populate("latestMessage");
   if (!convos) {
     throw createHttpError.BadRequest("Oops... Something went wrong!");
   }
@@ -48,8 +48,10 @@ export const populateConversation = async (
     fieldToPopulate,
     fieldsToRemove
   );
-  if (!populatedConvo)
+  if (!populatedConvo) {
     throw createHttpError.BadRequest("Oops... Something went wrong!");
+  }
+
   return populatedConvo;
 };
 
@@ -77,9 +79,11 @@ export const getUserConversations = async (user_id) => {
 };
 
 export const updateLatestMessage = async (convo_id, msg) => {
+  console.log(convo_id);
   const updatedConvo = await ConversationModel.findByIdAndUpdate(convo_id, {
     latestMessage: msg,
   });
+  console.log("updatedConvo", updatedConvo);
   if (!updatedConvo) {
     throw createHttpError.BadRequest("Oops... Something went wrong!");
   }
