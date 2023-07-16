@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ChatContainer from "../components/Chat/ChatContainer";
 import WhatsappHome from "../components/Chat/welcome/WhatsappHome";
 import { Sidebar } from "../components/sidebar";
+import SocketContext from "../context/SocketContext";
 import { getConversations } from "../features/chatSlice";
 
 function Home() {
@@ -33,4 +34,10 @@ function Home() {
   );
 }
 
-export default Home;
+const HomeWithSocket = (props) => {
+  <SocketContext.Consumer>
+    {(socket) => <Home {...props} socket={socket}></Home>}
+  </SocketContext.Consumer>;
+};
+
+export default HomeWithSocket;

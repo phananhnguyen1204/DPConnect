@@ -1,5 +1,6 @@
 // import { CallIcon, ChatIcon, DocumentIcon } from "./svg";
 import { io } from "socket.io-client";
+import SocketContext from "./context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -21,24 +22,28 @@ function App() {
 
   return (
     <div className="dark">
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={token ? <Home></Home> : <Navigate to="/login"></Navigate>}
-          ></Route>
-          <Route
-            path="/login"
-            element={!token ? <Login></Login> : <Navigate to="/"></Navigate>}
-          ></Route>
-          <Route
-            path="/register"
-            element={
-              !token ? <Register></Register> : <Navigate to="/"></Navigate>
-            }
-          ></Route>
-        </Routes>
-      </Router>
+      <SocketContext.Provider value={socket}>
+        <Router>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                token ? <Home></Home> : <Navigate to="/login"></Navigate>
+              }
+            ></Route>
+            <Route
+              path="/login"
+              element={!token ? <Login></Login> : <Navigate to="/"></Navigate>}
+            ></Route>
+            <Route
+              path="/register"
+              element={
+                !token ? <Register></Register> : <Navigate to="/"></Navigate>
+              }
+            ></Route>
+          </Routes>
+        </Router>
+      </SocketContext.Provider>
     </div>
   );
 }
