@@ -20,7 +20,10 @@ function Sidebar() {
       ></Search>
       {searchResults.length > 0 ? (
         <>
-          <SearchResults searchResults={searchResults}></SearchResults>
+          <SearchResults
+            searchResults={searchResults}
+            setSearchResults={setSearchResults}
+          ></SearchResults>
         </>
       ) : (
         <>

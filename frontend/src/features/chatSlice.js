@@ -7,8 +7,11 @@ const MESSAGE_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}/message`;
 const initialState = {
   status: "",
   error: "",
+  //all the conversations of that user has
   conversations: [],
   activeConversation: {},
+  //all messages of that user has in only one conversation,
+  //will change when user change conversation
   messages: [],
   notifications: [],
 };
@@ -150,6 +153,17 @@ export const chatSlice = createSlice({
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.messages = [...state.messages, action.payload];
+        //update latest Messages in frontend
+        let conversation = {
+          ...action.payload.conversation,
+          latestMessage: action.payload,
+        };
+
+        let newConvos = [...state.conversations].filter(
+          (c) => c._id !== conversation._id
+        );
+        newConvos.unshift(conversation);
+        state.conversations = newConvos;
       })
       .addCase(sendMessage.rejected, (state, action) => {
         state.status = "failed";
