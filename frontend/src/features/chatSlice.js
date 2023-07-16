@@ -64,7 +64,7 @@ export const getConversationMessages = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
+
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data.error.message);
@@ -96,6 +96,7 @@ export const chatSlice = createSlice({
       .addCase(open_create_conversation.pending, (state, action) => {
         state.status = "loading";
       })
+      //set active conversation
       .addCase(open_create_conversation.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.activeConversation = action.payload;

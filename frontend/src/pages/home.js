@@ -9,7 +9,7 @@ function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
-  console.log("activeConversation", activeConversation);
+  // console.log("activeConversation", activeConversation);
 
   //get Conversations
   useEffect(() => {
