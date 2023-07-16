@@ -1,4 +1,5 @@
 // import { CallIcon, ChatIcon, DocumentIcon } from "./svg";
+import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -9,6 +10,10 @@ import {
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Register from "./pages/register";
+
+//socket.io
+const socket = io(process.env.REACT_APP_API_ENDPOINT.split("/api/v1")[0]);
+
 function App() {
   // const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
