@@ -31,11 +31,11 @@ export const create_open_conversation = async (req, res, next) => {
     } else {
       //create conversation because it does not exist
       // res.send("We need to create a new conversation");
-      let receiver_user = await findUser(receiver_id);
+      // let receiver_user = await findUser(receiver_id);
       let convodata = {
         //the person you will have conversation with
-        name: receiver_user.name,
-        picture: receiver_user.picture,
+        name: "conversation name",
+        picture: "conversation picture",
         isGroup: false,
         users: [sender_id, receiver_id],
       };

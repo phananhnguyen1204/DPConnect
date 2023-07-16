@@ -4,7 +4,10 @@ import ChatContainer from "../components/Chat/ChatContainer";
 import WhatsappHome from "../components/Chat/welcome/WhatsappHome";
 import { Sidebar } from "../components/sidebar";
 import SocketContext from "../context/SocketContext";
-import { getConversations } from "../features/chatSlice";
+import {
+  getConversations,
+  updateMessagesAndConversations,
+} from "../features/chatSlice";
 
 function Home({ socket }) {
   const dispatch = useDispatch();
@@ -23,6 +26,13 @@ function Home({ socket }) {
       dispatch(getConversations(user.token));
     }
   }, [user, dispatch]);
+
+  //listening to received messaged
+  useEffect(() => {
+    socket.on("receive message", (message) => {
+      dispatch(updateMessagesAndConversations(message));
+    });
+  }, [socket]);
   return (
     <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center  overflow-hidden">
       {/* container */}
