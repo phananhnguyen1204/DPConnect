@@ -1,14 +1,47 @@
-import { EmojiIcon } from "../../../svg";
+import { CloseIcon, EmojiIcon } from "../../../svg";
+import EmojiPicker from "emoji-picker-react";
+import { useState } from "react";
+import { useEffect } from "react";
 
-function EmojiPicker() {
+function EmojiPickerApp({ textRef, setMessage, message }) {
+  const [showPicker, setShowPicker] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState();
+  useEffect(() => {
+    textRef.current.selectionEnd = cursorPosition;
+  }, [cursorPosition]);
+
+  const handleEmoji = (emojiData, e) => {
+    const { emoji } = emojiData;
+    const ref = textRef.current;
+    ref.focus();
+    const start = message.substring(0, ref.selectionStart);
+    const end = message.substring(ref.selectionStart);
+    const newText = start + emoji + end;
+    setMessage(newText);
+    setCursorPosition(start.length + emoji.length);
+  };
   return (
     <li>
-      <button className="btn" type="button">
-        <EmojiIcon className="dark:fill-dark_svg_1"></EmojiIcon>
+      <button
+        onClick={() => setShowPicker((prev) => !prev)}
+        className="btn"
+        type="button"
+      >
+        {showPicker ? (
+          <CloseIcon className="dark:fill-dark_svg_1"></CloseIcon>
+        ) : (
+          <EmojiIcon className="dark:fill-dark_svg_1"></EmojiIcon>
+        )}
       </button>
       {/* Emoji picker */}
+
+      {showPicker ? (
+        <div className="openEmojiAnimation absolute bottom-[60px] left-[-0.5px]">
+          <EmojiPicker theme="dark" onEmojiClick={handleEmoji}></EmojiPicker>
+        </div>
+      ) : null}
     </li>
   );
 }
 
-export default EmojiPicker;
+export default EmojiPickerApp;
