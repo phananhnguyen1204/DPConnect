@@ -2,12 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const CONVERSATION_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}/conversation`;
+const MESSAGE_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}/message`;
 
 const initialState = {
   status: "",
   error: "",
   conversations: [],
   activeConversation: {},
+  messages: [],
   notifications: [],
 };
 
@@ -21,7 +23,6 @@ export const getConversations = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data.error.message);
@@ -44,6 +45,25 @@ export const open_create_conversation = createAsyncThunk(
           },
         }
       );
+      console.log(data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.error.message);
+    }
+  }
+);
+
+//functions
+export const getConversationMessages = createAsyncThunk(
+  "conversation/messages",
+  async (values, { rejectWithValue }) => {
+    const { token, convo_id } = values;
+    try {
+      const { data } = await axios.get(`${MESSAGE_ENDPOINT}/${convo_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log(data);
       return data;
     } catch (error) {
@@ -81,6 +101,17 @@ export const chatSlice = createSlice({
         state.activeConversation = action.payload;
       })
       .addCase(open_create_conversation.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(getConversationMessages.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getConversationMessages.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.messages = action.payload;
+      })
+      .addCase(getConversationMessages.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

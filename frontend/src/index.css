@@ -61,3 +61,8 @@
 .scrollbar::-webkit-scrollbar-thumb {
   background: #444e54;
 }
+.overflow_scrollbar {
+  height: calc(100vh - 155px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
