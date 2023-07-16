@@ -6,11 +6,16 @@ import { Sidebar } from "../components/sidebar";
 import SocketContext from "../context/SocketContext";
 import { getConversations } from "../features/chatSlice";
 
-function Home() {
+function Home({ socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { activeConversation } = useSelector((state) => state.chat);
   // console.log("activeConversation", activeConversation);
+
+  //JOIN User into Socket.io
+  useEffect(() => {
+    socket.emit("join", user._id);
+  }, [user, socket]);
 
   //get Conversations
   useEffect(() => {
@@ -34,10 +39,9 @@ function Home() {
   );
 }
 
-const HomeWithSocket = (props) => {
+const HomeWithSocket = (props) => (
   <SocketContext.Consumer>
-    {(socket) => <Home {...props} socket={socket}></Home>}
-  </SocketContext.Consumer>;
-};
-
+    {(socket) => <Home {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
 export default HomeWithSocket;

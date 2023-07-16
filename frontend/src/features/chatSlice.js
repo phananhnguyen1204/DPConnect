@@ -48,7 +48,7 @@ export const open_create_conversation = createAsyncThunk(
           },
         }
       );
-      console.log(data);
+
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data.error.message);
