@@ -18,9 +18,9 @@ function Home() {
     }
   }, [user, dispatch]);
   return (
-    <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center py-[19px] overflow-hidden">
+    <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center  overflow-hidden">
       {/* container */}
-      <div className="container flex h-screen">
+      <div className="container flex h-screen py-[19px]">
         {/* SideBar */}
         <Sidebar></Sidebar>
         {activeConversation._id ? (
