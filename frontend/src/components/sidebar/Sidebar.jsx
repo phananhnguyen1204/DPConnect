@@ -8,7 +8,7 @@ import SearchResults from "./search/SearchResults";
 function Sidebar() {
   const [searchResults, setSearchResults] = useState([]);
   return (
-    <div className="w-[40%] h-full select-none">
+    <div className="flex0030 w-[40%] h-full select-none">
       {/* Sidebar header */}
       <SidebarHeader></SidebarHeader>
       {/* Notification */}
