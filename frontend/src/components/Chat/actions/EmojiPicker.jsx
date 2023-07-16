@@ -3,8 +3,14 @@ import EmojiPicker from "emoji-picker-react";
 import { useState } from "react";
 import { useEffect } from "react";
 
-function EmojiPickerApp({ textRef, setMessage, message }) {
-  const [showPicker, setShowPicker] = useState(false);
+function EmojiPickerApp({
+  textRef,
+  setMessage,
+  message,
+  showPicker,
+  setShowPicker,
+  setShowAttachments,
+}) {
   const [cursorPosition, setCursorPosition] = useState();
   useEffect(() => {
     textRef.current.selectionEnd = cursorPosition;
@@ -23,7 +29,10 @@ function EmojiPickerApp({ textRef, setMessage, message }) {
   return (
     <li>
       <button
-        onClick={() => setShowPicker((prev) => !prev)}
+        onClick={() => {
+          setShowPicker((prev) => !prev);
+          setShowAttachments(false);
+        }}
         className="btn"
         type="button"
       >
