@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getConversationMessages } from "../../features/chatSlice";
+import ChatActions from "./actions/ChatActions";
 import ChatHeader from "./header/ChatHeader";
 import ChatMessages from "./messages/ChatMessages";
 
@@ -27,6 +28,8 @@ function ChatContainer() {
         <ChatHeader></ChatHeader>
         {/* Chat Messages */}
         <ChatMessages></ChatMessages>
+        {/* Chat Actions */}
+        <ChatActions></ChatActions>
       </div>
     </div>
   );
