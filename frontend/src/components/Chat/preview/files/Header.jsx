@@ -4,7 +4,7 @@ import { CloseIcon } from "../../../../svg";
 
 function Header() {
   const dispatch = useDispatch();
-  const { files } = useSelector((state) => state.files);
+  const { files } = useSelector((state) => state.chat);
   const clearFilesHandler = () => {
     dispatch(clearFiles());
   };

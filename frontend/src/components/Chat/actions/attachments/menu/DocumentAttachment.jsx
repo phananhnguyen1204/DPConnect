@@ -40,6 +40,7 @@ function DocumentAttachment() {
           dispatch(
             addFiles({
               file: file,
+              fileData: e.target.result,
               type: getFileType(file.type),
             })
           );
