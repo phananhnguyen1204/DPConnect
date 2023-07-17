@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
+import FileMessage from "./files/FileMessage";
 import Message from "./Message";
 import Typing from "./Typing";
 
@@ -28,11 +29,27 @@ function ChatMessages({ typing }) {
           messages.map((message) => (
             //need to check if the message is ours or other user's
             //if it's our message. return true, and it will show to the right
-            <Message
-              message={message}
-              key={message._id}
-              isMe={user._id === message.sender._id}
-            ></Message>
+            <>
+              {/* Message files */}
+              {message.files.length > 0
+                ? message.files.map((file) => (
+                    <FileMessage
+                      FileMessage={file}
+                      message={message}
+                      key={message._id}
+                      isMe={user._id === message.sender._id}
+                    ></FileMessage>
+                  ))
+                : null}
+              {/* Message Text */}
+              {message.message.length > 0 ? (
+                <Message
+                  message={message}
+                  key={message._id}
+                  isMe={user._id === message.sender._id}
+                ></Message>
+              ) : null}
+            </>
           ))}
         {typing === activeConversation._id ? <Typing></Typing> : null}
         <div className="mt-2" ref={endRef}></div>
