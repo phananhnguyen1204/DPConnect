@@ -9,7 +9,7 @@ function HandleAndSend({ activeIndex, setActiveIndex }) {
       {/* Empty */}
       <span></span>
       {/* List files */}
-      <div className="flex gap-x-2">
+      <div className="flex gap-x-2 items-center">
         {files.map((file, i) => (
           <div
             key={i}
