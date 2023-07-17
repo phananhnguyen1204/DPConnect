@@ -130,6 +130,9 @@ export const chatSlice = createSlice({
       newConvos.unshift(conversation);
       state.conversations = newConvos;
     },
+    clearFiles: (state, action) => {
+      state.files = [];
+    },
     addFiles: (state, action) => {
       state.files = [...state.files, action.payload];
     },
@@ -200,6 +203,7 @@ export const {
   setActiveConversation,
   updateMessagesAndConversations,
   addFiles,
+  clearFiles,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
