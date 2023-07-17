@@ -5,7 +5,8 @@ import {
   PhotoIcon,
   PollIcon,
   StickerIcon,
-} from "../../../../svg";
+} from "../../../../../svg";
+import PhotoAttachment from "./PhotoAttachment";
 
 function Menu() {
   return (
@@ -35,11 +36,7 @@ function Menu() {
           <StickerIcon></StickerIcon>
         </button>
       </li>
-      <li>
-        <button type="button" className="rounded-full bg-[#BF59CF]">
-          <PhotoIcon></PhotoIcon>
-        </button>
-      </li>
+      <PhotoAttachment></PhotoAttachment>
     </ul>
   );
 }
