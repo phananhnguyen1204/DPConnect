@@ -38,4 +38,15 @@ export default function (socket, io) {
       socket.in(user._id).emit("receive message", message);
     });
   });
+
+  //typing
+  //conversation is id of conversation
+  socket.on("typing", (conversation) => {
+    socket.in(conversation).emit("typing", conversation);
+  });
+
+  //stop typing
+  socket.on("stop typing", (conversation) => {
+    socket.in(conversation).emit("stop typing");
+  });
 }
