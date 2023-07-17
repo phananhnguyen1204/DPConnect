@@ -13,17 +13,24 @@ function FileViewer({ activeIndex }) {
             alt=""
             className="max-w-[80%] object-contain hview"
           ></img>
+        ) : files[activeIndex].type === "VIDEO" ? (
+          <video
+            src={files[activeIndex].fileData}
+            controls
+            className="max-w-[80%] object-contain hview"
+          ></video>
         ) : (
           <div className="min-w-full hview flex flex-col items-center justify-center">
             {/* File Icon Image */}
             <img
               src={`../../../../images/file/${files[activeIndex].type}.png`}
               alt={files[activeIndex].type}
-            ></img>
+            />
+            {/*No preview text*/}
             <h1 className="dark:text-dark_text_2 text-2xl">
-              No Preview Available
+              No preview available
             </h1>
-            {/* File size */}
+            {/*File size / type*/}
             <span className="dark:text-dark_text_2">
               {files[activeIndex]?.file?.size} kB - {files[activeIndex]?.type}
             </span>

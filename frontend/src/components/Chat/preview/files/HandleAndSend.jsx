@@ -9,6 +9,7 @@ import {
 import { CloseIcon, SendIcon } from "../../../../svg";
 import { uploadFiles } from "../../../../utils/upload";
 import Add from "./Add";
+import VideoThumbnail from "react-video-thumbnail";
 
 function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
         {files.map((file, i) => (
           <div
             key={i}
-            className={`fileThumbnail relative w-14 h-14 mt-2 border dark:border-white rounded-md overflow-hidden cursor-pointer
+            className={`fileThumbnail relative w-14 h-14 border dark:border-white mt-2 rounded-md overflow-hidden cursor-pointer
             ${activeIndex === i ? "border-[3px] !border-green_1" : ""}
             `}
             onClick={() => setActiveIndex(i)}
@@ -58,20 +59,22 @@ function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
                 src={file.fileData}
                 alt=""
                 className="w-full h-full object-cover"
-              ></img>
+              />
+            ) : file.type === "VIDEO" ? (
+              <VideoThumbnail videoUrl={file.fileData} />
             ) : (
               <img
                 src={`../../../../images/file/${file.type}.png`}
                 alt=""
                 className="w-8 h-10 mt-1.5 ml-2.5"
-              ></img>
+              />
             )}
-            {/* REmove file Icon */}
+            {/*Remove file icon*/}
             <div
-              onClick={() => handleRemoveFile(i)}
               className="removeFileIcon hidden"
+              onClick={() => handleRemoveFile(i)}
             >
-              <CloseIcon className="dark:fill-white absolute right-0 top-0 w-4 h-4"></CloseIcon>
+              <CloseIcon className="dark:fill-white absolute right-0 top-0 w-4 h-4" />
             </div>
           </div>
         ))}
