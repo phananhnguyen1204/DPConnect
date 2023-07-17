@@ -1,9 +1,34 @@
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import SocketContext from "../../../../context/SocketContext";
+import { sendMessage } from "../../../../features/chatSlice";
 import { SendIcon } from "../../../../svg";
+import { uploadFiles } from "../../../../utils/upload";
 import Add from "./Add";
 
-function HandleAndSend({ activeIndex, setActiveIndex }) {
-  const { files } = useSelector((state) => state.chat);
+function HandleAndSend({ activeIndex, setActiveIndex, message, socket }) {
+  const dispatch = useDispatch();
+  const { files, activeConversation } = useSelector((state) => state.chat);
+  const { user } = useSelector((state) => state.user);
+  const { token } = user;
+  const [loading, setLoading] = useState(false);
+
+  const sendMessageHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    //upload file from cloudinary
+    const uploaded_files = await uploadFiles(files);
+    //send the message
+    const values = {
+      token,
+      message,
+      convo_id: activeConversation._id,
+      files: uploaded_files.length > 0 ? uploaded_files : [],
+    };
+    let newMsg = await dispatch(sendMessage(values));
+    socket.emit("send message", newMsg.payload);
+    setLoading(false);
+  };
   return (
     <div className="w-[97%] flex items-center justify-between mt-2 border-t dark:border-dark_border_2">
       {/* Empty */}
@@ -37,11 +62,19 @@ function HandleAndSend({ activeIndex, setActiveIndex }) {
         <Add setActiveIndex={setActiveIndex}></Add>
       </div>
       {/* Send Button */}
-      <div className="bg-green_1 w-16 h-16 mt-2 rounded-full flex items-center justify-center cursor-pointer">
+      <div
+        className="bg-green_1 w-16 h-16 mt-2 rounded-full flex items-center justify-center cursor-pointer"
+        onClick={(e) => sendMessageHandler(e)}
+      >
         <SendIcon className="fill-white"></SendIcon>
       </div>
     </div>
   );
 }
 
-export default HandleAndSend;
+const HandleAndSendWithContext = (props) => (
+  <SocketContext.Consumer>
+    {(socket) => <HandleAndSend {...props} socket={socket} />}
+  </SocketContext.Consumer>
+);
+export default HandleAndSendWithContext;

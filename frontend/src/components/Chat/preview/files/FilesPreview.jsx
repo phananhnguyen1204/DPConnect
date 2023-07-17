@@ -22,6 +22,7 @@ function FilesPreview() {
           <HandleAndSend
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
+            message={message}
           ></HandleAndSend>
         </div>
       </div>
