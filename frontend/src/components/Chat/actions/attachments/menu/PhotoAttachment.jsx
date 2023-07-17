@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addFiles } from "../../../../../features/chatSlice";
 import { PhotoIcon } from "../../../../../svg";
+import { getFileType } from "../../../../../utils/file";
 
 function PhotoAttachment() {
   const inputRef = useRef(null);
@@ -11,23 +12,28 @@ function PhotoAttachment() {
 
   const imageHandler = (e) => {
     let files = Array.from(e.target.files);
-    files.forEach((img) => {
+    files.forEach((file) => {
       if (
-        img.type !== "image/png" &&
-        img.type !== "image/jpeg" &&
-        img.type !== "image/gif"
+        file.type !== "image/png" &&
+        file.type !== "image/jpeg" &&
+        file.type !== "image/gif" &&
+        file.type !== "video/mp4"
       ) {
-        files = files.filter((item) => item.name !== img.name);
+        files = files.filter((item) => item.name !== file.name);
         return;
-      } else if (img.size > 1024 * 1024 * 5) {
-        files = files.filter((item) => item.name !== img.name);
+      } else if (file.size > 1024 * 1024 * 5) {
+        files = files.filter((item) => item.name !== file.name);
         return;
       } else {
         const reader = new FileReader();
-        reader.readAsDataURL(img);
+        reader.readAsDataURL(file);
         reader.onload = (e) => {
           dispatch(
-            addFiles({ file: img, imgData: e.target.result, type: "image" })
+            addFiles({
+              file: file,
+              imgData: e.target.result,
+              type: getFileType(file.type),
+            })
           );
         };
       }
@@ -45,8 +51,9 @@ function PhotoAttachment() {
       <input
         type="file"
         hidden
+        multiple
         ref={inputRef}
-        accept="image/png,image/jpeg,image/gif"
+        accept="image/png,image/jpeg,image/gif,video/mp4,video/mpeg"
         onChange={imageHandler}
       ></input>
     </li>

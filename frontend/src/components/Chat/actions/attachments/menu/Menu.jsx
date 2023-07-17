@@ -6,6 +6,7 @@ import {
   PollIcon,
   StickerIcon,
 } from "../../../../../svg";
+import DocumentAttachment from "./DocumentAttachment";
 import PhotoAttachment from "./PhotoAttachment";
 
 function Menu() {
@@ -21,11 +22,7 @@ function Menu() {
           <ContactIcon></ContactIcon>
         </button>
       </li>
-      <li>
-        <button type="button" className="rounded-full bg-[#5F66CD]">
-          <DocumentIcon></DocumentIcon>
-        </button>
-      </li>
+      <DocumentAttachment></DocumentAttachment>
       <li>
         <button type="button" className="rounded-full bg-[#D3396D]">
           <CameraIcon></CameraIcon>
