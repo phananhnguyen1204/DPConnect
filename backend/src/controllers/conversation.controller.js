@@ -9,45 +9,53 @@ import {
 import { findUser } from "../services/user.service.js";
 
 export const create_open_conversation = async (req, res, next) => {
+  console.log(req.body);
   try {
     const sender_id = req.user.userId;
-    //id we want to add conversation to
-    const { receiver_id } = req.body;
-    //check if receiver_id is provided
-    if (!receiver_id) {
-      logger.error(
-        "please provide the user id you wanna start a conversation with"
+    const { receiver_id, isGroup } = req.body;
+    if (isGroup === false) {
+      //check if receiver_id is provided
+      if (!receiver_id) {
+        logger.error(
+          "please provide the user id you wanna start a conversation with !"
+        );
+        throw createHttpError.BadGateway("Oops...Something went wrong !");
+      }
+      //check if chat exists
+      const existed_conversation = await doesConversationExist(
+        sender_id,
+        receiver_id,
+        false
       );
-      throw createHttpError.BadGateway("Something went wrong!");
-    }
-    //check if chat exists
-    const existed_conversation = await doesConversationExist(
-      sender_id,
-      receiver_id
-    );
-    //conversation does exist
-    if (existed_conversation) {
-      res.json(existed_conversation);
+      if (existed_conversation) {
+        res.json(existed_conversation);
+      } else {
+        // let receiver_user = await findUser(receiver_id);
+        let convoData = {
+          name: "conversation name",
+          picture: "conversation picture",
+          isGroup: false,
+          users: [sender_id, receiver_id],
+        };
+        const newConvo = await createConversation(convoData);
+        const populatedConvo = await populateConversation(
+          newConvo._id,
+          "users",
+          "-password"
+        );
+        res.status(200).json(populatedConvo);
+      }
     } else {
-      //create conversation because it does not exist
-      // res.send("We need to create a new conversation");
-      // let receiver_user = await findUser(receiver_id);
-      let convodata = {
-        //the person you will have conversation with
-        name: "conversation name",
-        picture: "conversation picture",
-        isGroup: false,
-        users: [sender_id, receiver_id],
-      };
-      const newConvo = await createConversation(convodata);
-      // res.json(newConvo);
-      //populate user to get all the information about user
-      const populatedConvo = await populateConversation(
-        newConvo._id,
-        "users",
-        "-password"
+      console.log("hnaaaaaaaaaa");
+      console.log(isGroup);
+      //it's a group chat
+      //check if group chat exists
+      const existed_group_conversation = await doesConversationExist(
+        "",
+        "",
+        isGroup
       );
-      res.status(200).json(populatedConvo);
+      res.status(200).json(existed_group_conversation);
     }
   } catch (error) {
     next(error);

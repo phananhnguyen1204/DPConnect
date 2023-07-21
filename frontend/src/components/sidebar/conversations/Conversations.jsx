@@ -24,7 +24,7 @@ function Conversations({ onlineUsers, typing }) {
                 <Conversation
                   convo={convo}
                   key={convo._id}
-                  online={check ? true : false}
+                  online={!convo.isGroup && check ? true : false}
                   typing={typing}
                 ></Conversation>
               );
