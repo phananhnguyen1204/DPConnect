@@ -63,3 +63,37 @@ export const getConversations = async (req, res, next) => {
     next(error);
   }
 };
+
+export const createGroup = async (req, res, next) => {
+  const { name, users } = req.body;
+  //add current user to users
+  users.push(req.user.userId);
+  if (!name || !users) {
+    throw createHttpError.BadRequest("Please fill all fields");
+  }
+  if (users.length < 2) {
+    throw createHttpError.BadRequest(
+      "Atleaset 2 users are required to start a group chat"
+    );
+  }
+
+  let convoData = {
+    name,
+    users,
+    isGroup: true,
+    admin: req.user.userId,
+    picture: process.env.DEFAULT_GROUP_PICTURE,
+  };
+  try {
+    const newConvo = await createConversation(convoData);
+    const populatedConvo = await populateConversation(
+      newConvo._id,
+      "users admin",
+      "-password"
+    );
+    console.log(populatedConvo);
+    res.status(200).json(populatedConvo);
+  } catch (error) {
+    next(error);
+  }
+};

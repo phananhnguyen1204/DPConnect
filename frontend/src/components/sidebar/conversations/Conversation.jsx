@@ -43,7 +43,11 @@ function Conversation({ convo, socket, online, typing }) {
             }`}
           >
             <img
-              src={getConversationPicture(user, convo.users)}
+              src={
+                convo.isGroup
+                  ? convo.picture
+                  : getConversationPicture(user, convo.users)
+              }
               alt="pic"
               className="w-full h-full object-cover"
             ></img>
@@ -52,7 +56,9 @@ function Conversation({ convo, socket, online, typing }) {
           <div className="w-full flex flex-col">
             {/* COnversation name */}
             <h1 className="font-bold flex items-center gap-x-2 ">
-              {capitalize(getConversationName(user, convo.users))}
+              {convo.isGroup
+                ? convo.name
+                : capitalize(getConversationName(user, convo.users))}
             </h1>
             {/* Conversation message */}
             <div>

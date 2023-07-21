@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
+import { createGroupConversation } from "../../../../features/chatSlice";
 import { ReturnIcon } from "../../../../svg";
 import ValidIcon from "../../../../svg/Valid";
 import MultipleSelect from "./MultipleSelect";
@@ -10,6 +11,7 @@ import UnderlineInput from "./UnderlineInput";
 function CreateGroup({ setShowCreateGroup }) {
   const { user } = useSelector((state) => state.user);
   const { status } = useSelector((state) => state.chat);
+  const dispatch = useDispatch();
   const [name, setName] = useState();
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -49,6 +51,22 @@ function CreateGroup({ setShowCreateGroup }) {
     }
   };
 
+  const createGroupHandler = async () => {
+    if (status !== "loading") {
+      let users = [];
+      selectedUsers.forEach((user) => {
+        users.push(user.value);
+      });
+      let values = {
+        name,
+        users,
+        token: user.token,
+      };
+      let newConvo = await dispatch(createGroupConversation(values));
+      console.log(newConvo);
+    }
+  };
+
   return (
     <div className="createGroupAnimation relative flex0030 h-full z-40">
       {/* Container */}
@@ -71,7 +89,10 @@ function CreateGroup({ setShowCreateGroup }) {
         ></MultipleSelect>
         {/* Create Group Button */}
         <div className="absolute bottom-1/3 left-1/2 -translate-x-1/2 ">
-          <button className="btn bg-green_1 scale-150 hover:bg-green-500">
+          <button
+            className="btn bg-green_1 scale-150 hover:bg-green-500"
+            onClick={() => createGroupHandler()}
+          >
             {status === "loading" ? (
               <ClipLoader color="#E9EDEF" size={25}></ClipLoader>
             ) : (
