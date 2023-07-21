@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Call from "../components/Chat/call/Call";
 
@@ -23,8 +23,11 @@ function Home({ socket }) {
   const { activeConversation } = useSelector((state) => state.chat);
   //call
   const [call, setCall] = useState(callData);
+  const [stream, setStream] = useState();
   const { receivingCall, callEnded } = call;
   const [callAccepted, setCallAccepted] = useState(false);
+  const myVideo = useRef();
+  const userVideo = useRef();
   //typing
   const [typing, setTyping] = useState(false);
   // console.log("activeConversation", activeConversation);
@@ -74,7 +77,14 @@ function Home({ socket }) {
         </div>
       </div>
       {/* // Call */}
-      <Call call={call} setCall={setCall} callAccepted={callAccepted}></Call>
+      <Call
+        call={call}
+        setCall={setCall}
+        callAccepted={callAccepted}
+        userVideo={userVideo}
+        myVideo={myVideo}
+        stream={stream}
+      ></Call>
     </>
   );
 }
