@@ -1,3 +1,4 @@
+import CallArea from "./CallArea";
 import Header from "./Header";
 import Ringing from "./Ringing";
 
@@ -10,6 +11,8 @@ function Call({ call, setCall, callAccepted }) {
         <div>
           {/* Header */}
           <Header></Header>
+          {/* Call Area */}
+          <CallArea name="Phan Anh"></CallArea>
         </div>
       </div>
 
