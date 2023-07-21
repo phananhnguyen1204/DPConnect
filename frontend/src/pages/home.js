@@ -142,14 +142,14 @@ function Home({ socket }) {
         </div>
       </div>
       {/* // Call */}
-      <Call
+      {/* <Call
         call={call}
         setCall={setCall}
         callAccepted={callAccepted}
         userVideo={userVideo}
         myVideo={myVideo}
         stream={stream}
-      ></Call>
+      ></Call> */}
     </>
   );
 }

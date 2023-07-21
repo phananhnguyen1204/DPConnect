@@ -4,7 +4,7 @@ import ring from "./audio/ringtone.mp3";
 import { useRef, useState } from "react";
 import { useEffect } from "react";
 
-function Ringing({ call, setCall }) {
+function Ringing({ call, setCall, name, picture }) {
   const { receivingCall, callEnded } = call;
   const [timer, setTimer] = useState(0);
 
@@ -32,13 +32,13 @@ function Ringing({ call, setCall }) {
         {/* Call infos */}
         <div className="flex items-center gap-x-2">
           <img
-            src="https://tse4.mm.bing.net/th?id=OIP.6fTCkql1sx5oNnB_GW7JEAHaE8&pid=Api&P=0&h=180"
+            src={picture}
             alt={`caller profile picture`}
             className="w-28 h-28 rounded-full"
           ></img>
           <div>
             <h1 className="dark:text-white">
-              <b>Ronaldo</b>
+              <b>{name}</b>
             </h1>
             <span className="dark:text-dark_text_2">Chatapp video ...</span>
           </div>
