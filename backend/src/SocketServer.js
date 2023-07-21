@@ -14,6 +14,9 @@ export default function (socket, io) {
     }
     //send online users to frontend
     io.emit("get-online-users", onlineUsers);
+
+    //send socket id
+    io.emit("setup socket", socket.id);
   });
 
   //socket disconnected
@@ -48,5 +51,17 @@ export default function (socket, io) {
   //stop typing
   socket.on("stop typing", (conversation) => {
     socket.in(conversation).emit("stop typing");
+  });
+
+  //call
+  socket.on("call user", (data) => {
+    let userId = data.userToCall;
+    let userSocketId = onlineUsers.find((user) => user.userId === userId);
+    io.to(userSocketId.socketId).emit("call user", {
+      signal: data.signal,
+      from: data.from,
+      name: data.name,
+      picture: data.picture,
+    });
   });
 }

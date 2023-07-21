@@ -7,7 +7,7 @@ import ChatHeader from "./header/ChatHeader";
 import ChatMessages from "./messages/ChatMessages";
 import FilesPreview from "./preview/files/FilesPreview";
 
-function ChatContainer({ onlineUsers, typing }) {
+function ChatContainer({ onlineUsers, typing, callUser }) {
   const dispatch = useDispatch();
   const { activeConversation, messages, files } = useSelector(
     (state) => state.chat
@@ -35,6 +35,7 @@ function ChatContainer({ onlineUsers, typing }) {
             user,
             activeConversation.users
           )}
+          callUser={callUser}
         ></ChatHeader>
 
         {files.length > 0 ? (

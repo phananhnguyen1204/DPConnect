@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Call from "../components/Chat/call/Call";
+import Peer from "simple-peer";
 
 import ChatContainer from "../components/Chat/ChatContainer";
 import WhatsappHome from "../components/Chat/welcome/WhatsappHome";
@@ -10,10 +11,18 @@ import {
   getConversations,
   updateMessagesAndConversations,
 } from "../features/chatSlice";
+import {
+  getConversationId,
+  getConversationName,
+  getConversationPicture,
+} from "../utils/chat";
 
 const callData = {
-  receivingCall: true,
+  socketId: "",
+  receivingCall: false,
   callEnded: false,
+  name: "",
+  picture: "",
 };
 
 function Home({ socket }) {
@@ -24,7 +33,7 @@ function Home({ socket }) {
   //call
   const [call, setCall] = useState(callData);
   const [stream, setStream] = useState();
-  const { receivingCall, callEnded } = call;
+  const { receivingCall, callEnded, socketId } = call;
   const [callAccepted, setCallAccepted] = useState(false);
   const myVideo = useRef();
   const userVideo = useRef();
@@ -41,6 +50,61 @@ function Home({ socket }) {
       setOnlineUsers(users);
     });
   }, [user]);
+
+  //call
+  useEffect(() => {
+    setupMedia();
+    socket.on("setup socket", (id) => {
+      setCall({ ...call, socketId: id });
+    });
+    socket.on("call user", (data) => {
+      setCall({
+        ...call,
+        socketId: data.from,
+        name: data.name,
+        picture: data.picture,
+        signal: data.signal,
+        receivingCall: true,
+      });
+    });
+  }, []);
+
+  //Call user function
+  const callUser = () => {
+    enableMedia();
+    setCall({
+      ...call,
+      name: getConversationName(user, activeConversation.users),
+      picture: getConversationPicture(user, activeConversation.users),
+    });
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: stream,
+    });
+    peer.on("signal", (data) => {
+      socket.emit("call user", {
+        userToCall: getConversationId(user, activeConversation.users),
+        signal: data,
+        from: socketId,
+        name: user.name,
+        picture: user.picture,
+      });
+    });
+  };
+
+  //-----------------------------------
+  const setupMedia = () => {
+    navigator.mediaDevices
+      .getUserMedia({ vide: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+      });
+  };
+
+  const enableMedia = () => {
+    myVideo.current.srcObject = stream;
+  };
 
   //get Conversations
   useEffect(() => {
@@ -70,6 +134,7 @@ function Home({ socket }) {
             <ChatContainer
               onlineUsers={onlineUsers}
               typing={typing}
+              callUser={callUser}
             ></ChatContainer>
           ) : (
             <WhatsappHome></WhatsappHome>
