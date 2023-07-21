@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Call from "../components/Chat/call/Call";
+
 import ChatContainer from "../components/Chat/ChatContainer";
 import WhatsappHome from "../components/Chat/welcome/WhatsappHome";
 import { Sidebar } from "../components/sidebar";
@@ -9,11 +11,20 @@ import {
   updateMessagesAndConversations,
 } from "../features/chatSlice";
 
+const callData = {
+  receivingCall: true,
+  callEnded: false,
+};
+
 function Home({ socket }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { activeConversation } = useSelector((state) => state.chat);
+  //call
+  const [call, setCall] = useState(callData);
+  const { receivingCall, callEnded } = call;
+  const [callAccepted, setCallAccepted] = useState(false);
   //typing
   const [typing, setTyping] = useState(false);
   // console.log("activeConversation", activeConversation);
@@ -46,21 +57,25 @@ function Home({ socket }) {
     socket.on("stop typing", () => setTyping(false));
   }, [socket]);
   return (
-    <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center  overflow-hidden">
-      {/* container */}
-      <div className="container flex h-screen py-[19px]">
-        {/* SideBar */}
-        <Sidebar onlineUsers={onlineUsers} typing={typing}></Sidebar>
-        {activeConversation._id ? (
-          <ChatContainer
-            onlineUsers={onlineUsers}
-            typing={typing}
-          ></ChatContainer>
-        ) : (
-          <WhatsappHome></WhatsappHome>
-        )}
+    <>
+      <div className="h-screen dark:bg-dark_bg_1 flex items-center justify-center  overflow-hidden">
+        {/* container */}
+        <div className="container flex h-screen py-[19px]">
+          {/* SideBar */}
+          <Sidebar onlineUsers={onlineUsers} typing={typing}></Sidebar>
+          {activeConversation._id ? (
+            <ChatContainer
+              onlineUsers={onlineUsers}
+              typing={typing}
+            ></ChatContainer>
+          ) : (
+            <WhatsappHome></WhatsappHome>
+          )}
+        </div>
       </div>
-    </div>
+      {/* // Call */}
+      <Call call={call} setCall={setCall} callAccepted={callAccepted}></Call>
+    </>
   );
 }
 
