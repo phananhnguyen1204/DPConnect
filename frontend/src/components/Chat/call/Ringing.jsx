@@ -7,6 +7,7 @@ import { useEffect } from "react";
 function Ringing({ call, setCall }) {
   const { receivingCall, callEnded } = call;
   const [timer, setTimer] = useState(0);
+
   let interval;
   const handleTimer = () => {
     interval = setInterval(() => {
@@ -58,7 +59,7 @@ function Ringing({ call, setCall }) {
         </ul>
       </div>
       {/*Ringtone*/}
-      <audio src={ring} autoPlay={true} loop={true} controls></audio>
+      <audio src={ring} autoPlay={true} loop={true}></audio>
     </div>
   );
 }
