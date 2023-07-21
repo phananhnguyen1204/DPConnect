@@ -15,7 +15,7 @@ function FileMessage({ FileMessage, message, isMe }) {
       <div className="relative">
         {/* sender user message */}
         {!isMe && message.conversation.isGroup && (
-          <div className="absolute top-0.5 left-[-37px]">
+          <div className="absolute top-0.5 left-[-40px]">
             <img
               src={message.sender.picture}
               alt=""

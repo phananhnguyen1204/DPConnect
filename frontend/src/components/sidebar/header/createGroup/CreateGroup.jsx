@@ -63,7 +63,7 @@ function CreateGroup({ setShowCreateGroup }) {
         token: user.token,
       };
       let newConvo = await dispatch(createGroupConversation(values));
-      console.log(newConvo);
+      setShowCreateGroup(false);
     }
   };
 

@@ -8,7 +8,22 @@ function Message({ message, isMe }) {
       }`}
     >
       {/* Message Container */}
-      <div>
+      <div className="relative">
+        {/* Sender user message */}
+        {!isMe && (
+          <div
+            className={`absolute top-0.5 ${
+              !isMe ? "left-[-40px]" : "right-[-40px]"
+            }`}
+          >
+            <img
+              src={message.sender.picture}
+              alt=""
+              className="w-8 h-8 rounded-full"
+            ></img>
+          </div>
+        )}
+
         <div
           className={`relative h-full dark:text-dark_text_1 p-2 rounded-lg ${
             isMe ? "bg-green_3" : "dark:bg-dark_bg_2"
