@@ -7,6 +7,7 @@ import CreateGroup from "./createGroup/CreateGroup";
 function SidebarHeader() {
   const { user } = useSelector((state) => state.user);
   const [showMenu, setShowMenu] = useState(false);
+  const [showCreateGroup, setShowCreateGroup] = useState(false);
   return (
     <>
       {/* Sidebar header */}
@@ -45,14 +46,18 @@ function SidebarHeader() {
               <button className={`btn ${showMenu ? "bg-dark_hover_1" : ""}`}>
                 <DotsIcon className="dark:fill-dark_svg_1"></DotsIcon>
               </button>
-              {showMenu ? <Menu></Menu> : null}
+              {showMenu ? (
+                <Menu setShowCreateGroup={setShowCreateGroup}></Menu>
+              ) : null}
             </li>
           </ul>
         </div>
       </div>
 
       {/* Create Group */}
-      <CreateGroup></CreateGroup>
+      {showCreateGroup && (
+        <CreateGroup setShowCreateGroup={setShowCreateGroup}></CreateGroup>
+      )}
     </>
   );
 }
